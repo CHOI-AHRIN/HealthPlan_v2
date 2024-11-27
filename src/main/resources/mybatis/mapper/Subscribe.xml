@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.healthplan.work.dao.SubscribeMapper">
+
+	<!-- 전문가구독 list -->
+	<select id="selectSubscribeList" resultType="com.healthplan.work.vo.SubscribeVO">
+    SELECT
+          ROWNUM AS RNUM
+        , S.SNO
+        , S.MNO
+        , S.UUID
+        , S.STYPE
+        , S.TITLE
+        , S.CONTENTS
+        , S.COUNTS
+        , S.FILEID
+        , S.REPLYCNT
+        , S.TITLEIMG
+        , S.SPOINT
+        , S.WDATE_FORMATTED AS WDATE
+    FROM (
+        SELECT
+              SNO
+            , MNO
+            , UUID
+            , STYPE
+            , TITLE
+            , CONTENTS
+            , TO_CHAR(WDATE, 'YYYY.MM.DD') AS WDATE_FORMATTED
+            , COUNTS
+            , FILEID
+            , REPLYCNT
+            , (SELECT IMGNAME FROM NATTACH WHERE IMGTYPE = 'M' AND SNO = S.SNO) AS TITLEIMG
+            , TO_CHAR(SPOINT, 'FM999,999,999,999') AS SPOINT
+        FROM SUBSCRIBE S
+        WHERE 1=1
+        AND STYPE = 'T'
+        <include refid="search"></include>
+        ORDER BY WDATE DESC
+    ) S
+</select>
+
+
+
+	<!-- 구독 등록 -->
+	<insert id="insertSubscribe">
+
+		INSERT INTO SUBSCRIBE(
+			  SNO
+			, MNO
+			, UUID
+			, STYPE
+			, TITLE
+			, CONTENTS
+			, SPOINT
+			, WDATE
+			, COUNTS
+		) VALUES (
+			  SNO_SEQ.NEXTVAL
+			, #{mno}
+			, #{uuid}
+			, 'T'
+			, #{title}
+			, #{contents}
+			, #{spoint}
+			, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+			, 0
+		)
+
+	</insert>
+
+
+	<!-- 강의 등록 -->
+	<insert id="insertSubscribeLession" parameterType="com.healthplan.work.vo.SubscribeVO">
+
+		INSERT INTO SUBSCRIBE(
+			  SNO
+			, MNO
+			, UUID
+			, STYPE
+			, TITLE
+			, CONTENTS
+			, SPOINT
+			, WDATE
+			, COUNTS
+			) VALUES (
+			  SNO_SEQ.NEXTVAL
+			, #{mno}
+			, #{uuid}
+			, 'L'
+			, #{title}
+			, #{contents}
+			, #{spoint}
+			, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+			, 0
+		)
+
+		<selectKey keyProperty="sno" resultType="int" order="AFTER">
+			SELECT SNO_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+
+	</insert>
+
+
+	<!-- 강의 상세 조회 -->
+	<select id="selectSubscribeLessionRead" resultType="com.healthplan.work.vo.SubscribeVO">
+
+		SELECT
+			  SNO
+			, MNO
+			, UUID
+			, STYPE
+			, TITLE
+			, CONTENTS
+			, WDATE
+			, COUNTS
+			, FILEID
+			, REPLYCNT
+			, SPOINT
+		FROM  SUBSCRIBE
+		WHERE SNO = #{sno}
+
+	</select>
+
+	<!-- 구독 상세 조회 -->
+	<select id="selectSubscribeRead" resultType="com.healthplan.work.vo.SubscribeVO">
+
+		SELECT
+			  SNO
+			, MNO
+			, UUID
+			, STYPE
+			, TITLE
+			, CONTENTS
+			, WDATE
+			, COUNTS
+			, FILEID
+			, REPLYCNT
+			, SPOINT
+		FROM  SUBSCRIBE
+		WHERE SNO = #{sno}
+
+	</select>
+
+
+	<!-- 구독 수정 -->
+	<update id="updateSubscribe" parameterType="com.healthplan.work.vo.SubscribeVO" >
+
+		UPDATE SUBSCRIBE
+		SET
+			  TITLE		= #{title}
+			, CONTENTS	= #{contents}
+			, SPOINT	= #{spoint}
+		WHERE SNO 		= #{sno}
+
+	</update>
+
+	<!-- 강의 수정 -->
+	<update id="updateSubscribeLession" >
+
+		UPDATE SUBSCRIBE
+		SET
+			  TITLE		= #{title}
+			, CONTENTS	= #{contents}
+			, SPOINT	= #{spoint}
+		WHERE SNO 		= #{sno}
+
+	</update>
+
+	<!-- 구독 삭제 -->
+	<delete id="deleteSubscribe">
+
+		DELETE FROM SUBSCRIBE WHERE SNO = #{sno}
+
+	</delete>
+
+
+	<!-- 강의 삭제 -->
+	<delete id="deleteSubscribeLession">
+
+		DELETE FROM SUBSCRIBE WHERE SNO = #{sno}
+
+	</delete>
+
+
+	<!-- 강의 list -->
+	<select id="selectSubscribeLessionList" resultType="com.healthplan.work.vo.SubscribeVO">
+    SELECT
+          ROWNUM AS RNUM
+        , S.SNO
+        , S.MNO
+        , S.UUID
+        , S.STYPE
+        , S.TITLE
+        , S.CONTENTS
+        , S.COUNTS
+        , S.FILEID
+        , S.REPLYCNT
+        , S.TITLEIMG
+        , S.SPOINT
+        , S.WDATE_FORMATTED AS WDATE
+    FROM (
+        SELECT
+              SNO
+            , MNO
+            , UUID
+            , STYPE
+            , TITLE
+            , CONTENTS
+            , TO_CHAR(WDATE, 'YYYY.MM.DD') AS WDATE_FORMATTED
+            , COUNTS
+            , FILEID
+            , REPLYCNT
+            , (SELECT IMGNAME FROM NATTACH WHERE IMGTYPE = 'M' AND SNO = S.SNO) AS TITLEIMG
+            , TO_CHAR(SPOINT, 'FM999,999,999,999') AS SPOINT
+        FROM SUBSCRIBE S
+        WHERE 1=1
+        AND STYPE = 'L'
+        <include refid="search"></include>
+        ORDER BY WDATE DESC
+    ) S
+	</select>
+
+	<!-- 강의 list count -->
+	<select id="selectSubscribeLessionCount" resultType="int">
+
+		SELECT
+			  COUNT(*)
+		FROM  SUBSCRIBE
+		WHERE 1=1
+		AND STYPE = 'L'
+
+		<include refid="search"></include>
+
+	</select>
+
+
+	<!-- 구독 list count -->
+	<select id="selectSubscribeCount" resultType="int">
+
+		SELECT
+			  COUNT(*)
+		FROM  SUBSCRIBE
+		WHERE 1=1
+		AND STYPE = 'T'
+
+		<include refid="search"></include>
+
+	</select>
+
+	<!-- 강의 조회수 -->
+	<update id="updateSubscribeLessionCount">
+
+		UPDATE SUBSCRIBE
+		SET
+			  COUNTS = COUNTS + 1
+		WHERE SNO = #{sno}
+
+	</update>
+
+	<!-- 구독 조회수 -->
+	<update id="updateSubscribeCount">
+
+		UPDATE SUBSCRIBE
+		SET
+			  COUNTS = COUNTS + 1
+		WHERE SNO = #{sno}
+
+	</update>
+
+	<!-- 댓글수 더하기 -->
+	<update id="updateReplyCnt">
+
+		UPDATE SUBSCRIBE
+		SET
+			REPLYCNT = (SELECT MAX(REPLYCNT) + 1 FROM SUBSCRIBE WHERE SNO = #{sno})
+		WHERE SNO 	 = #{sno}
+
+	</update>
+
+	<!-- 댓글수 빼기 -->
+	<update id="updateReplyCntSubtraction">
+
+		UPDATE SUBSCRIBE
+		SET
+			REPLYCNT = (SELECT MAX(REPLYCNT) - 1 FROM SUBSCRIBE WHERE SNO = #{sno})
+		WHERE SNO 	 = #{sno}
+
+	</update>
+
+	<!-- 댓글수 조회 -->
+	<select id="selectReply">
+		SELECT COUNT(*)
+		FROM SREPLY
+		WHERE SNO = #{sno}
+	</select>
+
+		<!-- 댓글수 더하기 -->
+	<update id="updateReplyCnt2">
+
+		UPDATE SUBSCRIBE
+		SET
+			REPLYCNT = (SELECT COUNT(*)
+		FROM SREPLY
+		WHERE SNO = #{sno})
+		WHERE SNO 	 = #{sno}
+
+	</update>
+
+
+
+	<!-- 첨부파일 등록 -->
+	<insert id="subscribeAttach" parameterType="java.util.HashMap">
+
+		<foreach collection="listMap" item="item" open="INSERT ALL" close="SELECT * FROM DUAL" separator=" ">
+
+			INTO NATTACH(
+				  ANO
+				, SNO
+				, FILENAME
+				, IMGTYPE
+				, REGDATE
+			) VALUES(
+				  ANO_SEQ.NEXTVAL
+				, #{item.sno}
+				, #{item.fileName}
+				, 'A' <!--, #{item.imgtype}-->
+				, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+			)
+
+		</foreach>
+
+	</insert>
+
+
+	<!-- 첨부파일 등록 -->
+	<insert id="subscribeStringAttach" parameterType="java.lang.String">
+
+		INSERT INTO NATTACH(
+			  ANO
+			, SNO
+			, FILENAME
+			, IMGTYPE
+			, REGDATE
+		) VALUES(
+			  ANO_SEQ.NEXTVAL
+			, #{csno}
+			, #{imgName}
+			, 'A'
+			, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+		)
+
+	</insert>
+
+
+	<!-- 첨부파일 insert -->
+	<insert id="addAttach" parameterType="java.lang.String">
+
+		INSERT INTO NATTACH (
+			  IMGNAME
+			, IMAGEURL
+			, UUID
+			, PATH
+			, IMGTYPE
+			, SNO
+			, ANO
+			, REGDATE
+		)
+		VALUES (
+			  #{imgName}
+			, #{imgURL}
+			, #{uuid}
+			, #{path}
+			, #{imgType}
+			, SNO_SEQ.CURRVAL
+			, ANO_SEQ.NEXTVAL
+			, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+		)
+
+	</insert>
+
+
+	<!-- 첨부파일 update -->
+	<insert id="updateAttach" parameterType="java.lang.String">
+
+		INSERT INTO NATTACH (
+			  IMGNAME
+			, IMAGEURL
+			, UUID
+			, PATH
+			, IMGTYPE
+			, SNO
+			, REGDATE
+		)
+		VALUES (
+			  #{imgName}
+			, #{imgURL}
+			, #{uuid}
+			, #{path}
+			, #{imgType}
+			, #{sno}
+			, CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Seoul'
+		)
+
+	</insert>
+
+
+	<!-- 첨부파일 select -->
+	<select id="selectImageList" resultType="com.healthplan.work.vo.ImageDTO">
+
+		SELECT
+			  SNO
+			, IMGNAME
+			, IMAGEURL
+			, UUID
+			, PATH
+			, IMGTYPE
+		FROM  NATTACH
+		WHERE 1=1
+		  AND SNO = #{sno}
+		  AND IMGTYPE = 'A'
+		ORDER BY REGDATE
+
+	</select>
+
+
+
+		<select id="selectMainImage" resultType="com.healthplan.work.vo.ImageDTO">
+
+		SELECT
+			  SNO
+			, IMGNAME
+			, IMAGEURL
+			, UUID
+			, PATH
+			, IMGTYPE
+		FROM  NATTACH
+		WHERE 1=1
+		  AND SNO = #{sno}
+		  AND IMGTYPE = 'M'
+
+	</select>
+
+
+
+	<!-- 첨부파일 삭제 -->
+	<delete id="deleteAttach">
+
+		DELETE FROM NATTACH WHERE SNO = #{sno}
+
+	</delete>
+
+
+	<!-- 통합 list Search -->
+	<sql id="search">
+		<if test="searchType != null and searchType != ''">
+			<if test="searchType == 'total'">
+				AND (
+				TITLE LIKE '%'||#{keyword}||'%'
+				OR CONTENTS LIKE '%'||#{keyword}||'%'
+				OR UUID LIKE '%'||#{keyword}||'%'
+				)
+			</if>
+			<if test="searchType != 'total'">
+				AND ${searchType} LIKE '%'||#{keyword}||'%'
+			</if>
+		</if>
+	</sql>
+
+</mapper>
