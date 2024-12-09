@@ -11,5 +11,6 @@ public class SReplyVO {
     private String rcomment;
     private String rregdate;
     private String uregdate;
+    private String name;
 
 }

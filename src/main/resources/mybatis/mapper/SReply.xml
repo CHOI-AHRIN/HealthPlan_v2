@@ -32,13 +32,15 @@
         (
         SELECT
         ROWNUM AS RNUM
-        , RNO
-        , MNO
-        , SNO
-        , RCOMMENT
-        , RREGDATE
-        , UREGDATE
-        FROM  SREPLY
+        , s.RNO
+        , s.MNO
+        , s.SNO
+        , s.RCOMMENT
+        , s.RREGDATE
+        , s.UREGDATE
+        , m.name
+        FROM  SREPLY s
+        LEFT JOIN MEMBER m ON s.mno = m.mno
         WHERE 1=1
         AND SNO = #{sno}
         ORDER BY RNO DESC
