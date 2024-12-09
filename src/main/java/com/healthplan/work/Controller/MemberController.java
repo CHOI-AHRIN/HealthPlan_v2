@@ -231,12 +231,6 @@ public class MemberController {
         }
 
     }
-
-   
-    public String getMethodName(@RequestParam String param) {
-        return new String();
-    }
-
     
      // 로그아웃
      @GetMapping("/logout")
