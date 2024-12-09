@@ -4,9 +4,12 @@ HealthPlan project version2
 - 수행기간: 2024.12.09 ~ 2024.12.31 **'~ing`**
 - 수행인원: 최아린
 
+<br />
+
 # 📂 프로젝트 수행일정
 기업 초청 프로젝트 발표회의 피드백을 기반으로 프로젝트를 업그레이드 하는 중입니다.
 이전 버전의 프로젝트가 궁금하다면! 🔗[📕BE|HealthPlan](https://github.com/CHOI-AHRIN/HealthPlan) [📕FE|HealthPlan](https://github.com/CHOI-AHRIN/HealthPlan_front)
+
 
  ## 📆24.12.09(월) ~ 13(금)
 - [ ] 회원번호 숨김 처리 ( 이름(아이디) 표시하는데 아이디는 특정 몇 자리는 * 표시로 나오게 하기 )
