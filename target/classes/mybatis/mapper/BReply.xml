@@ -7,18 +7,17 @@
 
     <!-- 댓글 목록 조회 -->
     <select id="listReply" parameterType="int" resultType="com.healthplan.work.vo.BReplyEntity">
-        SELECT
-        rno,
-        bno,
-        mno,
-        rcomment,
-        rregdate
-        FROM
-        BREPLY
-        WHERE
-        bno = #{bno}
-        ORDER BY
-        rno ASC
+        SELECT 
+        b.rno,
+        b.bno,
+        b.mno,
+        b.rcomment,
+        b.rregdate,
+        m.name
+        FROM BREPLY b
+        LEFT JOIN MEMBER m ON b.mno = m.mno
+        WHERE b.bno = #{bno}
+        ORDER BY b.rno ASC
     </select>
 
     <!-- 댓글 등록 -->

@@ -11,4 +11,5 @@ public class BReplyEntity {
 	private int mno;         // 회원 번호(작성자)
 	private String rcomment; // 댓글 내용
 	private Date rregdate;   // 댓글 작성일
+	private String name;
 }
