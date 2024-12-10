@@ -27,6 +27,7 @@ com/healthplan/work/vo/PageMaker.class
 com/healthplan/work/vo/PointDTO.class
 com/healthplan/work/dao/SReplyMapper.class
 com/healthplan/work/Configuration/CorsConfig.class
+com/healthplan/work/Controller/MailController.class
 com/healthplan/work/dao/ChallengeMapper.class
 com/healthplan/work/util/JwtUtils.class
 com/healthplan/work/Controller/BReplyController.class

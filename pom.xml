@@ -139,6 +139,12 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
+		<!-- 메일 API -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 		<!-- JWT API -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
