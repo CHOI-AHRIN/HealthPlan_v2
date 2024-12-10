@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
@@ -203,7 +201,7 @@ public class MemberController {
     @PostMapping("/loginCookie")
     public ResponseEntity<?> loginCookie(@RequestBody Map<String, String> requestData) throws Exception {
 
-        logger.info("1. loginCookie Controller");   
+        logger.info("1. loginCookie Controller");
 
         String token = requestData.get("token"); // token 값 추출
         System.out.println("2. 받은 토큰 확인 : ㅣ" + token);
@@ -231,9 +229,9 @@ public class MemberController {
         }
 
     }
-    
-     // 로그아웃
-     @GetMapping("/logout")
+
+    // 로그아웃
+    @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session)
             throws Exception {
 
@@ -282,10 +280,12 @@ public class MemberController {
     // 이메일 중복체크
     @PostMapping("/emailCk")
     public int emailCk(@RequestBody String email) throws Exception {
-        logger.info("/******************** 포스트 돌겠습니다 !! emailCk post ...........");
+        logger.info("1. emailCk post ...........");
         logger.info(email.toString());
 
         int result = mapper.emailCk(email);
+
+        logger.info("Result: " + result); // int 값을 문자열로 출력
 
         return result;
     }
@@ -367,6 +367,16 @@ public class MemberController {
 
         return "SUCCESS";
 
+    }
+
+    // 이메일 수정
+    @PostMapping("/modiEmail")
+    public String modiEmail(@RequestBody String email, String uuid) throws Exception {
+
+        logger.info(email);
+        mapper.modiEmail(email, uuid);
+
+        return "success";
     }
 
     // 회원정보수정

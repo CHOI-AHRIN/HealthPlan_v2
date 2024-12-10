@@ -142,10 +142,18 @@
         update member
         set
         upw=#{upw},
-        phone=#{phone},
-        email=#{email}
+        phone=#{phone}
         where
         uuid=#{uuid}
+    </update>
+
+    <!-- 이메일 수정 -->
+    <update id="modiEmail" >
+        update member
+        set
+        email = #{email}
+        where
+        uuid = #{uuid}
     </update>
 
     <!-- 회원탈퇴 -->

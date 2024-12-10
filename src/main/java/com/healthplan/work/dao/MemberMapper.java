@@ -57,6 +57,9 @@ public interface MemberMapper {
     // 마이페이지 회원정보수정
     public void update(MemberEntity member) throws Exception;
 
+    // 이메일 수정
+    public void modiEmail(String email, String uuid) throws Exception;
+
     // 회원탈퇴
     public int delete(String uuid) throws Exception;
 
@@ -68,6 +71,5 @@ public interface MemberMapper {
 
     // 회원정보수정
     public void modifyMem(MemberEntity mem) throws Exception;
-
 
 }
