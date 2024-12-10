@@ -4,6 +4,7 @@
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/vo/UploadResultDTO.java
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/dto/LoginDTO.java
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/vo/SearchCriteria.java
+/home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/Controller/MailController.java
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/Controller/SReplyController.java
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/Controller/MemberController.java
 /home/user1/workspace/hpp_v2/hp_v2/src/main/java/com/healthplan/work/dao/NewsMapper.java
