@@ -44,12 +44,12 @@ public class MailService {
         try {
             message.setFrom(senderEmail);
             message.setRecipients(MimeMessage.RecipientType.TO, email);
-            message.setSubject("이메일 인증");
+            message.setSubject("[HealthPlan] 이메일 인증번호 발송드립니다");
             String body = """
-                    <h3>" + "안녕하세요. HealthPlan입니다. ☺️" + "</h3>
-                    <h3>" + "요청하신 인증 번호입니다." + "</h3>
-                    <h1>" + number + "</h1>
-                    <h3>" + "감사합니다." + "</h3>
+                    <h3>안녕하세요. HealthPlan입니다. ☺️</h3>
+                    <h4>요청하신 인증 번호입니다.</h4>
+                    <h1>%d</h1>
+                    <h4>좋은하루 보내세요! 감사합니다.</h4>
                     """.formatted(number);
             message.setText(body, "UTF-8", "html");
         } catch (MessagingException e) {
@@ -62,6 +62,7 @@ public class MailService {
     public int sendMail(String email) {
         int number = createNumber(); // 번호 생성
         MimeMessage message = CreateMail(email, number);
+        System.out.println("Received email: " + email); // 전달된 이메일 로그
         javaMailSender.send(message);
         return number;
     }

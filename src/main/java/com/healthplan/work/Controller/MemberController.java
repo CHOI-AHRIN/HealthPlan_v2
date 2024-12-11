@@ -46,7 +46,6 @@ public class MemberController {
     private JwtUtils jwtUtils = new JwtUtils();
 
     @Autowired
-
     private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     public MemberController(PasswordEncoder passwordEncoder) {
@@ -279,15 +278,22 @@ public class MemberController {
 
     // 이메일 중복체크
     @PostMapping("/emailCk")
-    public int emailCk(@RequestBody String email) throws Exception {
+    public String emailCk(@RequestBody Map<String, String> request) throws Exception {
         logger.info("1. emailCk post ...........");
-        logger.info(email.toString());
+    
+        String email = request.get("inputEmail");
+
+        logger.info("2. " + email);
 
         int result = mapper.emailCk(email);
 
-        logger.info("Result: " + result); // int 값을 문자열로 출력
+        logger.info("3. Result: " + result); // int 값을 문자열로 출력
 
-        return result;
+        String result2 = "" + result;
+
+        logger.info("4. Result2: " + result); // int 값을 문자열로 출력
+
+        return result2;
     }
 
     // 이름 조회
@@ -371,13 +377,17 @@ public class MemberController {
 
     // 이메일 수정
     @PostMapping("/modiEmail")
-    public String modiEmail(@RequestBody String email, String uuid) throws Exception {
+    public String modiEmail(@RequestBody Map<String, String> request) throws Exception {
+
+        String uuid = request.get("uuid");
+        String email = request.get("email");
 
         logger.info(email);
         mapper.modiEmail(email, uuid);
 
         return "success";
     }
+    
 
     // 회원정보수정
     @PostMapping("/modifyMem")
