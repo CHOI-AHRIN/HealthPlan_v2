@@ -448,7 +448,7 @@ public class MemberController {
     }
 
     // 회원탈퇴
-    @DeleteMapping("/remove")
+    @PostMapping("/remove")
     public ResponseEntity<String> delete(@RequestBody Map<String, String> request) throws Exception {
         String uuid = request.get("uuid");
         int rowsAffected = mapper.delete(uuid);
