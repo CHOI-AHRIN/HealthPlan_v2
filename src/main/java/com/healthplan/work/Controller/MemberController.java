@@ -280,7 +280,7 @@ public class MemberController {
     @PostMapping("/emailCk")
     public String emailCk(@RequestBody Map<String, String> request) throws Exception {
         logger.info("1. emailCk post ...........");
-    
+
         String email = request.get("inputEmail");
 
         logger.info("2. " + email);
@@ -387,7 +387,6 @@ public class MemberController {
 
         return "success";
     }
-    
 
     // 회원정보수정
     @PostMapping("/modifyMem")
@@ -395,6 +394,57 @@ public class MemberController {
         logger.info("1. .modifyMem : " + mem);
         mapper.modifyMem(mem);
         return "SUCCESS";
+    }
+
+    // 비밀번호 확인
+    @PostMapping("/upwCk")
+    public ResponseEntity<String> upwCk(@RequestBody Map<String, String> request) throws Exception {
+
+        String uuid = request.get("uuid");
+        String upw = request.get("upw");
+
+        logger.info("1. uuid: " + uuid);
+        logger.info("2. upw: " + upw);
+
+        // 저장된 해시된 비밀번호 가져오기
+        String storedHashedPassword = mapper.getHashedPasswordByUuid(uuid);
+        logger.info("3. Stored Hashed Password: " + storedHashedPassword);
+
+        // 비밀번호 비교
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        boolean isPasswordMatch = passwordEncoder.matches(upw, storedHashedPassword);
+        logger.info("4. 비밀번호 일치 여부: " + isPasswordMatch);
+
+        if (isPasswordMatch) {
+            return ResponseEntity.ok("success");
+        }
+        // 비밀번호 일치 하지 않을때 코드 변경하기
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호가 일치하지 않습니다.");
+    }
+
+    // 비밀번호 변경
+    @PostMapping("/modiUpw")
+    public ResponseEntity<String> modiUpw(@RequestBody Map<String, String> request) throws Exception {
+
+        String uuid = request.get("uuid");
+        String upw = request.get("newUpw");
+
+        logger.info("1. uuid: " + uuid);
+        logger.info("2. upw: " + upw);
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(upw);
+
+        logger.info("3. 해시된 비밀번호:" + hashedPassword);
+
+        // upw = hashedPassword;
+        Map<String, Object> params = new HashMap<>();
+        params.put("uuid", uuid);
+        params.put("upw", hashedPassword); 
+
+        mapper.updateUpw(params);
+
+        return ResponseEntity.ok("succes");
     }
 
     // 회원탈퇴

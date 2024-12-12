@@ -60,6 +60,11 @@ public interface MemberMapper {
     // 이메일 수정
     public void modiEmail(String email, String uuid) throws Exception;
 
+    // 비밀번호 수정
+    // public void updateUpw(String uuid, String upw) throws Exception;
+    public void updateUpw(Map<String, Object> params) throws Exception;
+
+
     // 회원탈퇴
     public int delete(String uuid) throws Exception;
 
